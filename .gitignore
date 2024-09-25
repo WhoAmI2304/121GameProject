@@ -1,0 +1,12 @@
+# Ігнорування директорій
+.vscode/*
+Logs/*
+UserSettings/*
+Library/*
+
+# Ігнорування файлів проекту Rider
+*.csproj
+*.sln
+
+# Unity специфічні файли, які можуть бути зайвими
+*.csproj.user
