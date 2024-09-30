@@ -8,6 +8,7 @@ TagManager:
   - FollowZone
   - OffsetZone
   - CloseZone
+  - Obstacle
   layers:
   - Default
   - TransparentFX

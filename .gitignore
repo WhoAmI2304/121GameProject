@@ -1,8 +1,9 @@
 # Ігнорування директорій
-.vscode/*
-Logs/*
-UserSettings/*
-Library/*
+.vscode/
+Logs/
+UserSettings/
+Library/
+Temp/
 
 # Ігнорування файлів проекту Rider
 *.csproj
