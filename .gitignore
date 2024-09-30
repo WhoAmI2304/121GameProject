@@ -3,6 +3,7 @@
 Logs/
 UserSettings/
 Library/
+Temp/
 
 # Ігнорування файлів проекту Rider
 *.csproj
