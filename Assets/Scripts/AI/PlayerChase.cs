@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerChase : MonoBehaviour
 {
-    private FieldOfView fov;
+    private EnemyFieldOfView fov;
     void Start()
     {
-        fov = GetComponent<FieldOfView>();
+        fov = GetComponent<EnemyFieldOfView>();
     }
 
     // Update is called once per frame

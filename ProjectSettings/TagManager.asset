@@ -13,7 +13,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Fog
   - Water
   - UI
   - Ground
@@ -21,7 +21,7 @@ TagManager:
   - FollowZone
   - CloseZone
   - OffsetZone
-  - Target
+  - 
   - Obstacle
   - 
   - 

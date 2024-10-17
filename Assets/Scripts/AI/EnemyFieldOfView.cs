@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FieldOfView : MonoBehaviour
+public class EnemyFieldOfView : MonoBehaviour
 {
     public float radius;
     [Range(0,360)]
