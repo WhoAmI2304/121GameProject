@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    CharacterController player;
+    private CharacterController player;
 
     [SerializeField] private float movementSpeed = 3f;
     [SerializeField] private float sprintSpeed = 9f;
     [SerializeField] private float gravity = 9.8f;
+    [SerializeField] private LayerMask groundMask;
 
     [SerializeField] private GameObject groundTrigger;
     private bool isGrounded = false;
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontal, 0, vertical).normalized;
 
-        Quaternion rotation = Rotation();
+        Quaternion rotation = Aim();
 
         Vector3 rotatedDirection = rotation * direction;
 
@@ -38,21 +39,36 @@ public class PlayerMovement : MonoBehaviour
         else
             player.Move((rotatedDirection * movementSpeed) * Time.deltaTime);
     }
-    Quaternion Rotation()
+    private Quaternion Aim()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane ground = new Plane(Vector3.up, Vector3.zero);
-        float distance;
-
-        if (ground.Raycast(ray, out distance))
+        var (success, position) = GetMousePosition();
+        if (success)
         {
-            Vector3 lookAt = ray.GetPoint(distance);
-            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(lookAt.x, transform.position.y, lookAt.z) - transform.position);
-            transform.LookAt(new Vector3(lookAt.x, transform.position.y, lookAt.z));
-            return targetRotation;
+            // Calculate the direction
+            var direction = position - transform.position;
+
+            // Ignore the height difference.
+            direction.y = 0;
+
+            // Make the transform look in the direction.
+            transform.forward = direction;
+
+            // Return the rotation
+            return Quaternion.LookRotation(direction);
         }
 
-        return transform.rotation; 
+        // Return the current rotation if no aim direction is found
+        return transform.rotation;
+    }
+
+    public (bool success, Vector3 position) GetMousePosition()
+    {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask.value))
+            return (success: true, position: hitInfo.point);
+        else
+            return (success: false, position: Vector3.zero);
     }
 
 
