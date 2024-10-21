@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStatsSystem : MonoBehaviour
+public class StatsSystem : MonoBehaviour
 {
-    public int maxHP = 100;
-    private int currentHP;
+    [SerializeField] private int maxHP = 100;
+    [SerializeField] public int currentHP;
 
     // Start is called before the first frame update
     void Start()

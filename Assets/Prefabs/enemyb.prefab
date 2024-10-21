@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3662510730402634331}
   - component: {fileID: -9014513647149816711}
   m_Layer: 0
-  m_Name: bullet
+  m_Name: enemyb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 576

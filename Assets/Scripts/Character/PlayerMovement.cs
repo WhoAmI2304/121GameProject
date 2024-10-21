@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float sprintSpeed = 9f;
     [SerializeField] private float gravity = 9.8f;
     [SerializeField] private LayerMask groundMask;
-
+    [SerializeField] private Transform mouseTrigger;
     [SerializeField] private GameObject groundTrigger;
     private bool isGrounded = false;
 
@@ -65,8 +65,17 @@ public class PlayerMovement : MonoBehaviour
     {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        // Perform the raycast to check if it hits the ground
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundMask.value))
+        {
+            // Set the mouseTrigger position to the hit point
+            mouseTrigger.transform.position = hitInfo.point;
+
+            // Ensure the mouseTrigger stays on the ground plane
+            mouseTrigger.transform.position = new Vector3(mouseTrigger.transform.position.x, 0, mouseTrigger.transform.position.z);
+
             return (success: true, position: hitInfo.point);
+        }
         else
             return (success: false, position: Vector3.zero);
     }
