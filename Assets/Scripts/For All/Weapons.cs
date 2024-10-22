@@ -4,6 +4,7 @@ using UnityEngine;
 public class Weapons : MonoBehaviour
 {
     [SerializeField] private int damage = 10;
+    [SerializeField] private float speed = 50f;
     [SerializeField] private int maxAmmo = 30;
     public int currentAmmo;
     [SerializeField] float coldown = 0.1f;
@@ -73,20 +74,22 @@ public class Weapons : MonoBehaviour
             }
         }
     }
-
-
+    
     public void EnemyInput()
     {
+        RotateTowardsTarget();
         if (isReloading || isCoolingDown) return;
         
         if (currentAmmo <= 0)
         {
-            StartCoroutine(Reload());
+            if (!isReloading)
+                reloadCoroutine = StartCoroutine(Reload());
             return;
         }
 
         Shoot();
-        StartCoroutine(Cooldown());
+        if (!isCoolingDown)
+            cooldownCoroutine = StartCoroutine(Cooldown());
     }
     IEnumerator Cooldown()
     {
@@ -117,6 +120,7 @@ public class Weapons : MonoBehaviour
             Vector3 spreadVector = GetRandomSpreadDirection();
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(spreadVector));
             bullet.GetComponent<Bullet>().damage = damage;
+            bullet.GetComponent<Bullet>().speed = speed;
         }
     }
 

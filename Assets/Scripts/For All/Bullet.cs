@@ -5,7 +5,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private LayerMask obstacleLayer;
     [HideInInspector] public int damage;
-    [SerializeField] private float speed = 20f;
+    [HideInInspector] public float speed;
 
     [SerializeField] private float lifeTime = 5f;
 

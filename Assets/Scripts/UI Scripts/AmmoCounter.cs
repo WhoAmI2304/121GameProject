@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class AmmoCounter : MonoBehaviour
 {
     [SerializeField] private Text pocketAmmoText; // UI Text for pocket ammo
@@ -12,6 +12,8 @@ public class AmmoCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        if (Input.GetKeyDown(KeyCode.BackQuote)) SceneManager.LoadScene(0);
 
         StatsSystem playerStats = FindPlayerStats();
         Weapons activeWeapon = FindActiveWeapon();

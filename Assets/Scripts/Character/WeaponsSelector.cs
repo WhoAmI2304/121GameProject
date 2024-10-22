@@ -31,6 +31,7 @@ public class WeaponsSelector : MonoBehaviour
     {
         foreach (var weapon in weapons)
         {
+            if (weapon == null) continue;
             weapon.gameObject.SetActive(weapon == selectedWeapon ? true : false);
             Weapons _weapon = weapon.gameObject.GetComponent<Weapons>();
             if (weapon != selectedWeapon)
