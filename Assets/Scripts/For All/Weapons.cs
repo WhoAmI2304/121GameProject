@@ -20,6 +20,8 @@ public class Weapons : MonoBehaviour
     [SerializeField] private float angleMinX = -10;
     [SerializeField] private float angleMaxX = -90;
     private LayerMask weaponLayerMask;
+    private Coroutine reloadCoroutine;
+    private Coroutine cooldownCoroutine;
     void Start()
     {
         currentAmmo = maxAmmo;
@@ -48,7 +50,8 @@ public class Weapons : MonoBehaviour
         transform.rotation = Quaternion.Euler(angleX, currentRotation.y, currentRotation.z);
     }
     void Update()
-    {   
+    {
+        if (!gameObject.activeInHierarchy) return;
 
         RotateTowardsTarget();
         if (isReloading || isCoolingDown) return;
@@ -57,14 +60,16 @@ public class Weapons : MonoBehaviour
         {
             if (currentAmmo <= 0 || Input.GetKeyDown(KeyCode.R))
             {
-                StartCoroutine(Reload());
+                if (!isReloading)
+                    reloadCoroutine = StartCoroutine(Reload());
                 return;
             }
 
             if (Input.GetMouseButton(0))
             {
                 Shoot();
-                StartCoroutine(Cooldown());
+                if (!isCoolingDown)
+                    cooldownCoroutine = StartCoroutine(Cooldown());
             }
         }
     }
@@ -85,30 +90,29 @@ public class Weapons : MonoBehaviour
     }
     IEnumerator Cooldown()
     {
+        if (isCoolingDown) yield break;
+        
         isCoolingDown = true;
         yield return new WaitForSeconds(coldown);
         isCoolingDown = false;
     }
 
     IEnumerator Reload()
-    {
+    {  
+        if (ammoInPocket <= 0 || isReloading) yield break;
         isReloading = true;
         yield return new WaitForSeconds(reloadTime);
-        // Calculate the amount of ammo needed to fill the magazine
         int ammoNeeded = maxAmmo - currentAmmo;
-        // Determine the actual amount to reload based on available ammo in pocket
         int ammoToReload = Mathf.Min(ammoNeeded, ammoInPocket);
-        // Update the current ammo and ammo in pocket
         currentAmmo += ammoToReload;
         ammoInPocket -= ammoToReload;
-
         isReloading = false;
     }
 
     void Shoot()
     {
         for (int i = 0; i < bulletsPerShot; i++)
-        {
+        {   
             currentAmmo--;
             Vector3 spreadVector = GetRandomSpreadDirection();
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(spreadVector));
@@ -139,5 +143,14 @@ public class Weapons : MonoBehaviour
         }
 
         return spreadDirection;
+    }
+
+    public void SwitchWeapon(Weapons weapon)
+    {
+        if (weapon.reloadCoroutine != null) StopCoroutine(weapon.reloadCoroutine);
+        if (weapon.cooldownCoroutine != null) StopCoroutine(weapon.cooldownCoroutine);
+
+        weapon.isReloading = false;
+        weapon.isCoolingDown = false;
     }
 }

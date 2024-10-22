@@ -21,7 +21,6 @@ public class StatsSystem : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy died");
         Destroy(gameObject);
     }
 
