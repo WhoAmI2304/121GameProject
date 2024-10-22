@@ -2,23 +2,25 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FieldOfView : MonoBehaviour
+public class EnemyFieldOfView : MonoBehaviour
 {
-    public float radius;
-    [Range(0,360)]
-    public float angle;
+    [SerializeField] public float radius;
+    [SerializeField] [Range(0,360)] private float angle;
 
     public GameObject playerRef;
 
-    public LayerMask targetMask;
-    public LayerMask obstructionMask;
+    [SerializeField] private LayerMask targetMask;
+    [SerializeField] private LayerMask obstructionMask;
 
     public bool canSeePlayer;
 
     private void Start()
     {
-        playerRef = GameObject.FindGameObjectWithTag("Player");
         StartCoroutine(FOVRoutine());
+    }
+
+    private void Update(){
+        playerRef = GameObject.FindGameObjectWithTag("Player");
     }
 
     private IEnumerator FOVRoutine()
